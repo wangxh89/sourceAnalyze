@@ -20,11 +20,11 @@ define(function (require) {
 
             r: 0,
 
-            startAngle: 0,
+            startAngle: 0,  //开始角度
 
-            endAngle: Math.PI * 2,
+            endAngle: Math.PI * 2,  //结束角度
 
-            clockwise: true
+            clockwise: true     //
         },
 
         buildPath: function (ctx, shape) {

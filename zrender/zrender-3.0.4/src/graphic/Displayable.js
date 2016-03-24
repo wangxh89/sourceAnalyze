@@ -200,21 +200,7 @@ define(function (require) {
             this.__zr && this.__zr.refresh();
         },
 
-        /**
-         * 图形是否会触发事件
-         * If displayable object binded any event
-         * @return {boolean}
-         */
-        // TODO, 通过 bind 绑定的事件
-        // isSilent: function () {
-        //     return !(
-        //         this.hoverable || this.draggable
-        //         || this.onmousemove || this.onmouseover || this.onmouseout
-        //         || this.onmousedown || this.onmouseup || this.onclick
-        //         || this.ondragenter || this.ondragover || this.ondragleave
-        //         || this.ondrop
-        //     );
-        // },
+
         /**
          * Alias for animate('style')
          * @param {boolean} loop

@@ -18,51 +18,61 @@ define(function (require) {
         constructor: Style,
 
         /**
+         * 填充颜色
          * @type {string}
          */
         fill: '#000000',
 
         /**
+         * 描边颜色
          * @type {string}
          */
         stroke: null,
 
         /**
+         * 绘制透明度
          * @type {number}
          */
         opacity: 1,
 
         /**
+         * 破折线
          * @type {Array.<number>}
          */
         lineDash: null,
 
         /**
+         * 破折线阴影偏移
          * @type {number}
          */
         lineDashOffset: 0,
 
         /**
+         * 阴影模糊度
          * @type {number}
          */
         shadowBlur: 0,
 
         /**
+         * 阴影横向偏移
          * @type {number}
          */
         shadowOffsetX: 0,
 
         /**
+         * 阴影纵向偏移
          * @type {number}
          */
         shadowOffsetY: 0,
 
         /**
+         * 描边宽度
          * @type {number}
          */
         lineWidth: 1,
 
         /**
+         * 描边是否忽略 缩放
          * If stroke ignore scale
          * @type {Boolean}
          */
@@ -71,21 +81,25 @@ define(function (require) {
         // Bounding rect text configuration
         // Not affected by element transform
         /**
+         * 图形的附加的文字
          * @type {string}
          */
         text: null,
 
         /**
+         * 附加文字颜色
          * @type {string}
          */
         textFill: '#000',
 
         /**
+         * 附加文字描边
          * @type {string}
          */
         textStroke: null,
 
         /**
+         * 附加文字位置
          * 'inside', 'left', 'right', 'top', 'bottom'
          * [x, y]
          * @type {string|Array.<number>}
@@ -94,36 +108,43 @@ define(function (require) {
         textPosition: 'inside',
 
         /**
+         * 附加文字baseline top bottom middle, alphabetic, hanging, ideographic
          * @type {string}
          */
         textBaseline: null,
 
         /**
+         * 附加文字水平对齐 start,end,left,right,center
          * @type {string}
          */
         textAlign: null,
 
         /**
+         * 附加文字垂直对齐
          * @type {string}
          */
         textVerticalAlign: null,
 
         /**
+         * 附加文字距离
          * @type {number}
          */
         textDistance: 5,
 
         /**
+         *  附加文字 阴影模糊值
          * @type {number}
          */
         textShadowBlur: 0,
 
         /**
+         * 附加文字 阴影横向偏移值
          * @type {number}
          */
         textShadowOffsetX: 0,
 
         /**
+         * 附加文字 阴影纵向偏移值
          * @type {number}
          */
         textShadowOffsetY: 0,

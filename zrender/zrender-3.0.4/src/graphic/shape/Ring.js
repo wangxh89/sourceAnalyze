@@ -11,8 +11,8 @@ define(function (require) {
         shape: {
             cx: 0,
             cy: 0,
-            r: 0,
-            r0: 0
+            r: 0,    //第一个圆的半径
+            r0: 0    //第二个圆的半径
         },
 
         buildPath: function (ctx, shape) {

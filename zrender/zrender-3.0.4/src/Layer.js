@@ -1,5 +1,5 @@
 /**
- * @module zrender/Layer
+ * @module zrender/Layer 层管理 
  * @author pissang(https://www.github.com/pissang)
  */
 define(function (require) {
@@ -12,7 +12,7 @@ define(function (require) {
     }
 
     /**
-     * 创建dom
+     * 创建dom  一个canvas层
      *
      * @inner
      * @param {string} id dom id 待用
@@ -63,7 +63,8 @@ define(function (require) {
         this.dom = dom;
 
         var domStyle = dom.style;
-        if (domStyle) { // Not in node
+        if (domStyle) { // Not in node  
+            //禁止选中 触摸高亮
             dom.onselectstart = returnFalse; // 避免页面选中的尴尬
             domStyle['-webkit-user-select'] = 'none';
             domStyle['user-select'] = 'none';
@@ -113,6 +114,10 @@ define(function (require) {
 
         __dirty: true,
 
+        /**
+         * 初始化 context 视网膜屏等放大
+         * @return {[type]} [description]
+         */
         initContext: function () {
             this.ctx = this.dom.getContext('2d');
 
@@ -121,7 +126,10 @@ define(function (require) {
                 this.ctx.scale(dpr, dpr);
             }
         },
-
+        /**
+         * 创建一个back Canvas 用于motionBlur
+         * @return {[type]} [description]
+         */
         createBackBuffer: function () {
             var dpr = this.dpr;
 
@@ -134,6 +142,7 @@ define(function (require) {
         },
 
         /**
+         * 改变canvas大小
          * @param  {number} width
          * @param  {number} height
          */

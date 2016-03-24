@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Image</title>
+    <script type="text/javascript" src="../doc/asset/js/esl/esl.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+    require.config({
+        packages: [
+            {
+                name: 'zrender',
+                location: '../src',
+                main: 'zrender'
+            }
+        ]
+    });
+
+    require(["zrender", 'zrender/graphic/shape/Icon','zrender/graphic/shape/MarkLine'], function(zrender, IconShape,MarkLine){
+        // 初始化zrender
+        var zr = zrender.init( document.getElementById("Main") );
+        // var icon = new IconShape({
+        //     shape: {
+        //         x: -10,
+        //         y: -10,
+        //         width: 10 * 2,
+        //         height: 10 * 2,
+        //         iconType: "arrow"
+        //     }
+        // });  
+
+        // zr.add(icon);
+
+        var markLine = new MarkLine({
+            shape: {
+                xStart: 100,
+                yStart: 100,
+                xEnd: 200,
+                yEnd: 200,
+                symbol: "arrow",
+                symbolSize:[10,10]
+            }
+        });
+
+        zr.add(markLine);
+
+    })
+    </script>
+    <div id="Main" style="width:1000px;height:600px;"></div>
+</body>
+</html>

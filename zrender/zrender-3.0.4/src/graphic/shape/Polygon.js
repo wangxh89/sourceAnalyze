@@ -11,9 +11,9 @@ define(function (require) {
         type: 'polygon',
 
         shape: {
-            points: null,
+            points: null,  //数组 [[310,120],[350,210],[334,3443]]
 
-            smooth: false,
+            smooth: false,   
 
             smoothConstraint: null
         },

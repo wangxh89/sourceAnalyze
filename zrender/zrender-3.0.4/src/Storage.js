@@ -1,5 +1,5 @@
 /**
- * Storage内容仓库模块
+ * Storage内容仓库模块  主要是对Shape对象进行一些增删改查的封装
  * @module zrender/Storage
  * @author Kener (@Kener-林峰, kener.linfeng@gmail.com)
  * @author errorrik (errorrik@gmail.com)
@@ -62,7 +62,7 @@ define(function (require) {
         },
 
         /**
-         * 更新图形的绘制队列。
+         * 更新图形的绘制队列。 刷新每个节点
          * 每次绘制前都会调用，该方法会先深度优先遍历整个树，更新所有Group和Shape的变换并且把所有可见的Shape保存到数组中，
          * 最后根据绘制的优先级（zlevel > z > 插入顺序）排序得到绘制队列
          * @param {boolean} [includeIgnore=false] 是否包含 ignore 的数组

@@ -1,5 +1,5 @@
 /**
- * Default canvas painter
+ * Default canvas painter  Painter这个类主要负责MVC中的V（View）层，负责将Storage中的shape对象绘制到canvas中，包括了：更新、渲染、变化大小、导出、修改等操作。
  * @module zrender/Painter
  * @author Kener (@Kener-林峰, kener.linfeng@gmail.com)
  *         errorrik (errorrik@gmail.com)
@@ -107,6 +107,7 @@
      * @param {Ojbect} opts
      */
     var Painter = function (root, storage, opts) {
+        //传进来的dom是否是canvas
         var singleCanvas = !root.nodeName // In node ?
             || root.nodeName.toUpperCase() === 'CANVAS';
 
@@ -129,7 +130,7 @@
 
         var rootStyle = root.style;
 
-        // In node environment using node-canvas
+        // In node environment using node-canvas //禁止选中 触摸高亮
         if (rootStyle) {
             rootStyle['-webkit-tap-highlight-color'] = 'transparent';
             rootStyle['-webkit-user-select'] = 'none';
@@ -143,7 +144,7 @@
          * @type {module:zrender/Storage}
          */
         this.storage = storage;
-
+        //如果传过来的不是canvas  如 <div id="Main" style="width:600px;height:400px;"></div>
         if (!singleCanvas) {
             var width = this._getWidth();
             var height = this._getHeight();
@@ -167,10 +168,11 @@
              */
             this._layers = {};
             /**
+             * 层级list
              * @type {Array.<number>}
              * @private
              */
-            this._zlevelList = [];
+            this._zlevelList = [];  
         }
         else {
             // Use canvas width and height directly
@@ -461,6 +463,11 @@
             return this._layers;
         },
 
+        /**
+         * 更新层的__dirty状态
+         * @param  {[type]} list [description]
+         * @return {[type]}      [description]
+         */
         _updateLayerStatus: function (list) {
 
             var layers = this._layers;

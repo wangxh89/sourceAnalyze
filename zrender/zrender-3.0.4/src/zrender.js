@@ -31,7 +31,8 @@ define(function(require) {
     zrender.version = '3.0.4';
 
     /**
-     * @param {HTMLElement} dom
+     * zrender初始化
+     * @param {HTMLElement} dom  dom对象，不帮你做document.getElementById了
      * @param {Object} opts
      * @param {string} [opts.renderer='canvas'] 'canvas' or 'svg'
      * @param {number} [opts.devicePixelRatio]
@@ -44,7 +45,7 @@ define(function(require) {
     };
 
     /**
-     * Dispose zrender instance
+     * Dispose zrender instance  zrender实例销毁，记在_instances里的索引也会删除了
      * @param {module:zrender/ZRender} zr
      */
     zrender.dispose = function (zr) {
@@ -70,10 +71,22 @@ define(function(require) {
         return instances[id];
     };
 
+    /**
+     * 注册painter类型 默认只注册了canvas  如果要支持IE8 需要注册vml
+     * @param  {[type]} name [description]
+     * @param  {[type]} Ctor [description]
+     * @return {[type]}      [description]
+     */
     zrender.registerPainter = function (name, Ctor) {
         painterCtors[name] = Ctor;
     };
 
+    /**
+     *  删除zrender实例，ZRender实例dispose时会调用，
+     * 删除后getInstance则返回undefined
+     * @param  {[type]} id [description]
+     * @return {[type]}    [description]
+     */
     function delInstance(id) {
         delete instances[id];
     }
@@ -82,6 +95,8 @@ define(function(require) {
      * @module zrender/ZRender
      */
     /**
+     * ZRender接口类，对外可用的所有接口都在这里！！
+     * storage（M）数据CURD管理、painter（V）canvas生命周期管理、handler（C）事件交互为内部私有类，外部接口不可见
      * @constructor
      * @alias module:zrender/ZRender
      * @param {string} id
@@ -108,6 +123,8 @@ define(function(require) {
         var storage = new Storage();
 
         var rendererType = opts.renderer;
+
+        // 如果不支持canvas 使用vml , 默认使用canvas
         if (useVML) {
             if (!painterCtors.vml) {
                 throw new Error('You need to require \'zrender/vml/vml\' to support IE8');
@@ -117,15 +134,18 @@ define(function(require) {
         else if (!rendererType || !painterCtors[rendererType]) {
             rendererType = 'canvas';
         }
+        // 将 M层也传给 C层
         var painter = new painterCtors[rendererType](dom, storage, opts);
 
         this.storage = storage;
         this.painter = painter;
+        // 非node环境  才有事件交互
         if (!env.node) {
             this.handler = new Handler(painter.getViewportRoot(), storage, painter);
         }
 
         /**
+         *  动画控制  如需要刷新 立马刷新
          * @type {module:zrender/animation/Animation}
          */
         this.animation = new Animation({
@@ -163,6 +183,8 @@ define(function(require) {
 
             el.addSelfToZr(self);
         };
+
+        window.z = this; // add 把z透漏出去 为了方便调试查看  在控制台中输入z，回车
     };
 
     ZRender.prototype = {
@@ -177,7 +199,7 @@ define(function(require) {
         },
 
         /**
-         * 添加元素
+         * 添加元素  对应以前的addShape 增加到M中 然后在循环中立即刷新
          * @param  {string|module:zrender/Element} el
          */
         add: function (el) {
@@ -186,7 +208,7 @@ define(function(require) {
         },
 
         /**
-         * 删除元素
+         * 删除元素 
          * @param  {string|module:zrender/Element} el
          */
         remove: function (el) {

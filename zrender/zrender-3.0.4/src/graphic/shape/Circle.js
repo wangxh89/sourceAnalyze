@@ -11,9 +11,9 @@ define(function (require) {
         type: 'circle',
 
         shape: {
-            cx: 0,
-            cy: 0,
-            r: 0
+            cx: 0,//圆心的X坐标
+            cy: 0,//圆心Y坐标
+            r: 0  //圆半径
         },
 
         buildPath : function (ctx, shape) {

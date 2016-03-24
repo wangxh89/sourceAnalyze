@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Text</title>
+    <script type="text/javascript" src="../doc/asset/js/esl/esl.js"></script>
+</head>
+<body>
+    
+
+    <script type="text/javascript">
+    require.config({
+        packages: [
+            {
+                name: 'zrender',
+                location: '../src',
+                main: 'zrender'
+            }
+        ]
+    });
+
+    require(["zrender", 'zrender/graphic/shape/Circle','zrender/graphic/shape/Line'], function(zrender, circleShape,lineShape){
+        // 初始化zrender
+        var zr = zrender.init(document.getElementById("main"));
+        var circle1 = new circleShape({
+            shape: {
+                cx: 100,
+                cy: 100,
+                r: 50
+            },
+            style: {
+                fill: 'blue'
+            },
+            draggable: true
+        });
+
+        var circle2 = new circleShape({
+            shape: {
+                cx: 400,
+                cy: 400,
+                r: 50
+            },
+            style: {
+                fill: 'red'
+            },
+            draggable: true
+        });
+        var line1 = new lineShape({
+            shape: {
+                x1: circle1.shape.cx,
+                y1: circle1.shape.cy,
+                x2: circle2.shape.cx,
+                y2: circle2.shape.cy
+            },
+            style: {
+                fill: 'blue',
+                lineCap: "square"
+            },
+            draggable: false
+        });
+
+            circle1.on('mouseover', function () {
+                zr.dom.style.cursor = 'move';
+            });
+            circle1.on('mouseout', function () {
+                zr.dom.style.cursor = 'default';
+            });        
+        circle1.on('dragstart', function () {        
+            circle1.on('drag',function(){
+                refreshLine();
+            });
+        });
+        circle1.on('dragend',function(){
+            circle1.off('drag');
+        });
+        circle2.on('dragstart', function () {        
+            circle2.on('drag',function(){
+                refreshLine();
+            });
+        });
+        circle2.on('dragend',function(){
+            circle2.off('drag');
+        });
+        function refreshLine(){
+            // zr.remove(line1);
+            // line1 = new lineShape({
+            //     shape: {
+            //         x1: circle1.shape.cx+circle1.position[0],
+            //         y1: circle1.shape.cy+circle1.position[1],
+            //         x2: circle2.shape.cx+circle2.position[0],
+            //         y2: circle2.shape.cy+circle2.position[1],
+            //         color:'rgba(220, 20, 60, 0.8)'
+            //     },
+            //     style: {
+            //         fill: 'blue'
+            //     },
+            //     draggable: true
+            // });
+            // 
+            // zr.add(line1);
+            
+            line1.attr("shape", {
+                    x1: circle1.shape.cx+circle1.position[0],
+                    y1: circle1.shape.cy+circle1.position[1],
+                    x2: circle2.shape.cx+circle2.position[0],
+                    y2: circle2.shape.cy+circle2.position[1]
+                });
+        }
+        zr.add(circle1);
+        zr.add(circle2);
+        zr.add(line1);
+    });
+    
+    </script>
+    <div id="main" style="width:1000px;height:600px;"></div>
+</body>
+</html>

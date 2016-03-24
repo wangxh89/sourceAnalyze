@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="can" style="border:1px solid;" width="1000" height="1000">
+		
+	</canvas>
+
+	<script type="text/javascript">
+
+	var canvas = document.getElementById('can');
+	var context = canvas.getContext('2d');
+
+	createPath(context);
+
+	createRoad(context);
+
+	function createPath(context) {
+		context.save();
+		context.translate(130,250);
+		context.lineWidth = 4;
+		context.lineJoin = 'round';
+		context.strokeStyle = "#663300";
+		
+
+
+		context.beginPath();
+		context.moveTo(-25,-50);
+		context.lineTo(-10,-80);
+		context.lineTo(-20,-80);
+		context.lineTo(-5,-110);
+		context.lineTo(-15,-110);
+
+		context.lineTo(0,-140);
+		context.lineTo(15,-110);
+		context.lineTo(5,-110);
+		context.lineTo(20,-80);
+		context.lineTo(10,-80);
+		context.lineTo(25,-50);
+
+		context.closePath();
+
+		context.fillStyle="#339900";
+		context.fill();
+
+		context.fillStyle="#663300";
+		context.fillRect(-5,-50,10,50);
+
+		var trunkGradient = context.createLinearGradient(-5,-50,5,-50);
+		trunkGradient.addColorStop(0,'#663300');
+		trunkGradient.addColorStop(0.4,'#996600');
+		trunkGradient.addColorStop(1,'#552200');
+		context.fillStyle = trunkGradient;
+		context.fillRect(-5,-50,10,50);
+
+		context.stroke();
+		context.restore();		
+	}
+
+
+	function createRoad() {
+		context.save();
+
+		context.translate(-10,350);
+		context.beginPath();
+
+		context.moveTo(0,0);
+		context.quadraticCurveTo(170,-50,260,-190);
+
+		context.quadraticCurveTo(310,-250,410,-250);
+
+		context.strokeStyle = "#663300";
+		context.lineWidth = 20;
+		context.stroke();
+
+		context.restore();
+	}
+	</script>
+</body>
+</html>

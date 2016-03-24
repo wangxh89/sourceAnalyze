@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="utf-8" />
+    <title>Text</title>
+    <script type="text/javascript" src="../doc/asset/js/esl/esl.js"></script>
+
+</head>
+<body style="margin:0px;">
+    <div id="main" style="width:1000px;height:600px;margin:0px;"></div>
+
+    <script type="text/javascript">
+    require.config({
+        packages: [
+            {
+                name: 'zrender',
+                location: '../src',
+                main: 'zrender'
+            }
+        ]
+    });
+
+    require(["zrender", 'zrender/graphic/Text','zrender/graphic/shape/Circle'], function(zrender, ZText, Circle){
+        // 初始化zrender
+        var zr = zrender.init(document.getElementById("main"));
+
+
+        var text = new ZText({
+            style: {
+                x: 20,
+                y: 20,
+                text: "一、画圆",
+                textFont: '18px 微软雅黑'
+            },
+            draggable: true
+        });
+        zr.add(text);
+
+
+        var circle01 = new Circle({
+                position: [100, 100],  //平移到 100，100位置 因cx,cy为0，0所以 圆点在100，100位置
+                shape: {
+                    cx: 0,//圆心的X坐标
+                    cy: 0,//圆心Y坐标
+                    r: 50  //圆半径
+                },
+                style: {
+                    fill: 'rgba(33, 222, 10, 0.1)',
+                    lineWidth: 5,
+                    text:'circle',
+                    textPosition:'inside'
+                }            
+
+        });
+        zr.add(circle01);
+
+
+
+    });
+    </script>
+</body>
+</html>

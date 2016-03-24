@@ -1,5 +1,5 @@
 /**
- * 水滴形状
+ * 椭圆
  * @module zrender/graphic/shape/Ellipse
  */
 
@@ -11,7 +11,7 @@ define(function (require) {
         type: 'ellipse',
 
         shape: {
-            cx: 0, cy: 0,
+            cx: 0, cy: 0,   
             rx: 0, ry: 0
         },
 

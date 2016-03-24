@@ -1,4 +1,5 @@
 /**
+ * 拆线
  * @module zrender/graphic/shape/Polyline
  */
 define(function (require) {
@@ -10,7 +11,7 @@ define(function (require) {
         type: 'polyline',
 
         shape: {
-            points: null,
+            points: null,  //数组 [[310,120],[350,210],[334,3443]]
 
             smooth: false,
 

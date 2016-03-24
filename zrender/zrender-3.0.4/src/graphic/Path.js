@@ -55,6 +55,17 @@ define(function (require) {
 
             var style = this.style;
             var path = this.path;
+
+            /**
+             *  style: {
+             *       fill: 'rgba(33, 222, 10, 0.1)',
+             *       lineWidth: 5,
+             *       text:'circle',
+             *       textPosition:'inside'
+             *   },
+             *
+             */
+
             var hasStroke = pathHasStroke(style);
             var hasFill = pathHasFill(style);
 

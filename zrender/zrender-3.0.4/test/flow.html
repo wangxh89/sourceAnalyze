@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Text</title>
+    <script type="text/javascript" src="../doc/asset/js/esl/esl.js"></script>
+</head>
+<body>
+    
+
+    <script type="text/javascript">
+    require.config({
+        packages: [
+            {
+                name: 'zrender',
+                location: '../src',
+                main: 'zrender'
+            }
+        ]
+    });
+
+    require(["zrender", 'zrender/graphic/Image','zrender/graphic/shape/Circle','zrender/graphic/shape/MarkLine'], function(zrender, ImageShape, circleShape,MarkLine){
+        // 初始化zrender
+        var zr = zrender.init(document.getElementById("main"));
+        var imageHeight = 40;
+        var imageWidth = 40;
+        var startImage = new ImageShape({
+            position: [100, 100],
+            scale: [1, 1],
+            style: {
+                x: 0,
+                y: 0,
+                image: "start.svg",
+                width: imageWidth,
+                height: imageHeight
+            },
+            draggable: true
+        });
+
+        var endImage = new ImageShape({
+            position: [400, 100],
+            style: {
+                x: 0,
+                y: 0,
+                image: "star.svg",
+                width: imageWidth,
+                height: imageHeight,
+                 fill: 'red'
+            },
+            draggable: true
+        });
+        var line = new MarkLine({
+            shape: {
+                xStart: startImage.position[0] + imageWidth/2,
+                yStart: startImage.position[1] + imageHeight/2,
+                xEnd: endImage.position[0], // + imageWidth/2,
+                yEnd: endImage.position[1] + imageHeight/2,
+                symbol: "arrow",
+                symbolSize:[5,5]
+            },
+            style: {
+                fill: 'blue',
+                lineCap: "square"
+            },
+            draggable: false
+        });
+
+        startImage.on('mouseover', function () {
+            zr.dom.style.cursor = 'move';
+        });
+        startImage.on('mouseout', function () {
+            zr.dom.style.cursor = 'default';
+        });        
+        startImage.on('dragstart', function () {        
+            startImage.on('drag',function(){
+                refreshLine();
+            });
+        });
+        startImage.on('dragend',function(){
+            startImage.off('drag');
+        });
+        endImage.on('dragstart', function () {        
+            endImage.on('drag',function(){
+                refreshLine();
+            });
+        });
+        endImage.on('dragend',function(){
+            endImage.off('drag');
+        });
+        function refreshLine(){
+            
+            line.attr("shape", {
+                    xStart: startImage.position[0] + imageWidth/2,
+                    yStart: startImage.position[1]+ imageHeight/2,
+                    xEnd: endImage.position[0],//+ imageWidth/2,
+                    yEnd: endImage.position[1]+ imageHeight/2
+                });
+        }
+        zr.add(startImage);
+        zr.add(endImage);
+        zr.add(line);
+        setTimeout(function() {
+
+            line.drift();
+        },100);
+        
+    });
+    
+    </script>
+    <div id="main" style="width:1000px;height:600px;"></div>
+</body>
+</html>
