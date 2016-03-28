@@ -12,15 +12,15 @@
 
             cx: 0,
 
-            cy: 0,
+            cy: 0,   //圆心位置
 
-            r: 0,
+            r: 0,   //半径
 
-            startAngle: 0,
+            startAngle: 0,  //开始角度
 
-            endAngle: Math.PI * 2,
+            endAngle: Math.PI * 2,  //默认整个圆
 
-            clockwise: true
+            clockwise: true    //默认是顺时针
         },
 
         style: {

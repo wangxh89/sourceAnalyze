@@ -15,8 +15,10 @@ define(function (require) {
         type: 'isogon',
 
         shape: {
-            x: 0, y: 0,
-            r: 0, n: 0
+            x: 0,  
+            y: 0,   //坐标
+            r: 0,  //半径
+            n: 0  //9个边
         },
 
         buildPath: function (ctx, shape) {
