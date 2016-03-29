@@ -44,11 +44,15 @@ define(function (require) {
             }
             var img=new Image();
             img.src=shape.image;
-
-            img.onLoad = function() {
-                //头像的位置固定
+            if (img.complete) {
                 ctx._ctx&&ctx._ctx.drawImage(img,10,10);
+            } else {
+                img.onload = function() {
+                    //头像的位置固定
+                    ctx._ctx&&ctx._ctx.drawImage(img,10,10);
+                }                
             }
+
             //字的位置和最大长度也是固定的
             ctx._ctx&&ctx._ctx.strokeText(shape.text,50,40,50);
             ctx.closePath();

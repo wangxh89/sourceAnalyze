@@ -1,0 +1,38 @@
+<html>
+<head>
+<script type="text/javascript" src="js/fish-desktop-all.js"> </script>
+<script type="text/javascript" src="js/fish-desktop-require.js" data-main="task.js"></script>
+<script type="text/javascript">
+
+
+
+</script>
+</head>
+<body  >
+    <div class="demo_html" id="div_bpmn_main">
+        <div id="div_bpmn_splitter" style="height: 500px;">
+        <!-- bpm图形组件 -->
+        <div style="overflow-y: auto;overflow-x: hidden; ">
+            <div class="flowShapePanel" style=" width: 280px; overflow-y: auto">
+                <div class="ui-tabs" style=" width:100%;position: relative">
+                    <ul class="ui-tabs-nav">
+                        <li><a href="#flowShapesPanel">BPMN Shape</a></li>
+                    </ul>
+                    <div id="flowShapesPanel" class="ui-tabs-panel">
+                        <div id="shapesNodeAccordion" class="ui-accordion">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 中间编辑器 -->        
+        <div id="div_bpmn_editor"  style="float:left;border:1px solid #F00;width:100%;height:500px;"></div>
+
+        <!-- 右边属性编辑器 -->
+        <div class="flowPropertyPanel" style="width: 260px;height: 100px;overflow-y: auto;margin-bottom: 0;"></div>
+    </div>
+   
+</body>
+</html>
