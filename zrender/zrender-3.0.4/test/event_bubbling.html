@@ -49,22 +49,27 @@
 
             var g4 = new Group();
             g4.add(g3);
-
+            var a = "start";
             circle.on('click', function(e) {
-                console.log('Circle');
+                console.log('Circle' + a);
+                a = "circle";
             });
             g1.on('click', function(e) {
-                console.log('Group 1');
+                console.log('Group 1' + a);
+                a= "g1";
             });
             g2.one('click', function(e) {
-                console.log('Group 2 should be triggered once');
+                console.log('Group 2 should be triggered once' + a);
+                a="g2";
             });
             g3.on('click', function(e) {
-                console.log('Group 3');
+                console.log('Group 3' + a);
                 e.cancelBubble = true;
+                a="g3";
             });
             g4.on('click', function(e) {
-                console.log("Group 4 should not be triggered");
+                console.log("Group 4 should not be triggered" + a);
+                a="g4";
             })
 
             zr.add(g4);

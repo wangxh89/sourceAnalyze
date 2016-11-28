@@ -29,7 +29,7 @@ define(function (require) {
         buildPath: function (ctx, shape) {
             ctx.moveTo(shape.xStart, shape.yStart);
             ctx.lineTo(shape.xEnd, shape.yEnd);
-            this.brushSymbol(ctx,shape,0);
+           // this.brushSymbol(ctx,shape,0);
             this.brushSymbol(ctx,shape,1);
 
             return;

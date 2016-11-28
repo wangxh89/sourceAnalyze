@@ -166,8 +166,8 @@ define(function(require) {
     }
 
     /**
-     * 构造类继承关系
-     *
+     * 构造类继承关系  采用寄生组合式继承  参见 javascript高级程序设计
+     *  不同的地方 在于 放到所有原型函数的后面
      * @param {Function} clazz 源类
      * @param {Function} baseClazz 基类
      */

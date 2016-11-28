@@ -24,6 +24,8 @@
         var zr = zrender.init(document.getElementById("main"));
         var imageHeight = 40;
         var imageWidth = 40;
+
+        zr.dom.style.cursor ='nw-resize';
         var startImage = new ImageShape({
             position: [100, 100],
             scale: [1, 1],
@@ -32,7 +34,8 @@
                 y: 0,
                 image: "start.svg",
                 width: imageWidth,
-                height: imageHeight
+                height: imageHeight,
+                cursor: "move"
             },
             draggable: true
         });
@@ -45,7 +48,8 @@
                 image: "star.svg",
                 width: imageWidth,
                 height: imageHeight,
-                 fill: 'red'
+                 fill: 'red',
+
             },
             draggable: true
         });
@@ -65,12 +69,12 @@
             draggable: false
         });
 
-        startImage.on('mouseover', function () {
-            zr.dom.style.cursor = 'move';
-        });
-        startImage.on('mouseout', function () {
-            zr.dom.style.cursor = 'default';
-        });        
+        // startImage.on('mouseover', function () {
+        //     zr.dom.style.cursor = 'move';
+        // });
+        // startImage.on('mouseout', function () {
+        //     zr.dom.style.cursor = 'default';
+        // });        
         startImage.on('dragstart', function () {        
             startImage.on('drag',function(){
                 refreshLine();
