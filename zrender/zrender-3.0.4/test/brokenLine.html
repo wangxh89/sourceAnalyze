@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script type="text/javascript" src="../doc/asset/js/esl/esl.js"></script>
+</head>
+<body>
+
+
+<script type="text/javascript">
+    require.config({
+        packages: [
+            {
+                name: 'zrender',
+                location: '../src',
+                main: 'zrender'
+            }
+        ]
+    });
+
+    require(["zrender", 'zrender/graphic/Image', 'zrender/graphic/shape/Polyline'], function (zrender, ImageShape, Polyline) {
+        // 初始化zrender
+        var zr = zrender.init(document.getElementById("main"));
+        var imageHeight = 40;
+        var imageWidth = 40;
+        var startImage = new ImageShape({
+            position: [100, 100],
+            scale: [1, 1],
+            style: {
+                x: 0,
+                y: 0,
+                image: "start.svg",
+                width: imageWidth,
+                height: imageHeight
+            },
+            draggable: true
+        });
+
+        var gridComputing = function (startNode, endNode) {
+
+        };
+
+        var endImage = new ImageShape({
+            position: [400, 100],
+            style: {
+                x: 0,
+                y: 0,
+                image: "star.svg",
+                width: imageWidth,
+                height: imageHeight,
+                fill: 'red'
+            },
+            draggable: true
+        });
+
+        var path = new Polyline({
+            position: [0, 0],
+            shape: {
+               // points: [[50, 40], [80, 100]]
+            },
+            draggable: true
+        });
+
+        startImage.on('mouseover', function () {
+            zr.dom.style.cursor = 'move';
+        });
+        startImage.on('mouseout', function () {
+            zr.dom.style.cursor = 'default';
+        });
+        startImage.on('dragstart', function () {
+            startImage.on('drag', function () {
+                refreshLine();
+            });
+        });
+        startImage.on('dragend', function () {
+            startImage.off('drag');
+        });
+        endImage.on('dragstart', function () {
+            endImage.on('drag', function () {
+                refreshLine();
+            });
+        });
+        endImage.on('dragend', function () {
+            endImage.off('drag');
+        });
+
+        var Node = function (opt) {
+            this.X = opt.x;
+            this.Y = opt.y;
+            this.direction = opt.direction;
+        };
+
+
+        var basicLength = 5;
+        //计算path长度
+        var cal = function (points) {
+            var length = 0;
+            for (var i = 1; i < points.length; i++) {
+                length += Math.sqrt(Math.pow((points[i].X - points[i - 1].X), 2) + Math.pow((points[i].Y - points[i - 1].Y), 2));
+            }
+            return length;
+        };
+
+
+        //返回两个连接点之间的path
+        var gridComputing = function (startNode, endNode) {
+            var node0;
+            var node1;
+            var node2;
+            var node3;
+            var node4;
+            if (startNode.direction == 0 && endNode.direction == 0) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y - basicLength};
+                node3 = {X: endNode.X, Y: endNode.Y - basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+
+            }
+            if (startNode.direction == 0 && endNode.direction == 1) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y - basicLength};
+                node3 = {X: endNode.X + basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+
+            }
+            if (startNode.direction == 0 && endNode.direction == 2) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y - basicLength};
+                node3 = {X: endNode.X, Y: endNode.Y + basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+
+            }
+            if (startNode.direction == 0 && endNode.direction == 3) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y - basicLength};
+                node3 = {X: endNode.X - basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+
+            }
+            if (startNode.direction == 1 && endNode.direction == 0) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X + basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X, Y: endNode.Y - basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+
+            }
+            if (startNode.direction == 1 && endNode.direction == 1) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X + basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X + basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+            }
+            if (startNode.direction == 1 && endNode.direction == 2) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X + basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X, Y: endNode.Y + basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+            }
+            if (startNode.direction == 1 && endNode.direction == 3) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X + basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X - basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+            }
+            if (startNode.direction == 2 && endNode.direction == 0) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y + basicLength};
+                node3 = {X: endNode.X, Y: endNode.Y - basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+            }
+            if (startNode.direction == 2 && endNode.direction == 1) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y + basicLength};
+                node3 = {X: endNode.X + basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+            }
+            if (startNode.direction == 2 && endNode.direction == 2) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y + basicLength};
+                node3 = {X: endNode.X, Y: endNode.Y + basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+            }
+            if (startNode.direction == 2 && endNode.direction == 3) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X, Y: startNode.Y + basicLength};
+                node3 = {X: endNode.X - basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+            }
+            if (startNode.direction == 3 && endNode.direction == 0) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X - basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X, Y: endNode.Y - basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+            }
+            if (startNode.direction == 3 && endNode.direction == 1) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X - basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X + basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+            }
+            if (startNode.direction == 3 && endNode.direction == 2) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X - basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X, Y: endNode.Y + basicLength};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+            }
+            if (startNode.direction == 3 && endNode.direction == 3) {
+                node0 = {X: startNode.X, Y: startNode.Y};
+                node1 = {X: startNode.X - basicLength, Y: startNode.Y};
+                node3 = {X: endNode.X - basicLength, Y: endNode.Y};
+                node4 = {X: endNode.X, Y: endNode.Y};
+
+                if ((node1.X < node3.X) && (node1.Y < node3.Y)) {
+
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X < node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node1.X, Y: node3.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y < node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+                if ((node1.X >= node3.X) && (node1.Y >= node3.Y)) {
+                    node2 = {X: node3.X, Y: node1.Y};
+                }
+            }
+            var linkednodeSet = [];
+            linkednodeSet.push(node0);
+            linkednodeSet.push(node1);
+            linkednodeSet.push(node2);
+            linkednodeSet.push(node3);
+            linkednodeSet.push(node4);
+            return linkednodeSet;
+
+        };
+        //返回四个连接点包括位置属性
+        var getLinkedSet = function (imageShape) {
+            var rect = imageShape.getBoundingRect(),
+                    position = imageShape.position,
+                    style = imageShape.style;
+            return [
+                new Node({x: position[0] + style.x, y: position[1] + style.y + style.height / 2, direction: 3}),
+                new Node({x: position[0] + style.x + style.width / 2, y: position[1] + style.y, direction: 0}),
+                new Node({
+                    x: position[0] + style.x + style.width,
+                    y: position[1] + style.y + style.height / 2,
+                    direction:1
+                }),
+                new Node({
+                    x: position[0] + style.x + style.width / 2,
+                    y: position[1] + style.y + style.height,
+                    direction: 2
+                })
+            ];
+
+        };
+        //计算最小路径
+        var getMinLengthPath = function (startLinkedSet, endLinkedSet) {
+            var minLength = Number.MAX_VALUE;
+            var minLinkedNodeSet = [];
+            for (var i in startLinkedSet) {
+                var node = startLinkedSet[i];
+                for (var j in endLinkedSet) {
+                    var _node = endLinkedSet[j];
+                    var linkednodeSet = gridComputing(node, _node);
+                    var length = cal(linkednodeSet);
+                    if (length < minLength) {
+                        minLength = length;
+                        minLinkedNodeSet = linkednodeSet;
+                    }
+                }
+            }
+            return minLinkedNodeSet;
+        };
+
+        //{x:,y:}==>[]
+        var convert = function (paths) {
+            var arr = [];
+            for (var i = 0; i < paths.length; i++) {
+                arr.push([paths[i].X, paths[i].Y]);
+            }
+            return arr;
+        };
+
+        function refreshLine() {
+            //  console.log(startImage.getBoundingRect());
+            //分别获取获取两个图形的外面四个连接点
+            var startLinkedSet = getLinkedSet(startImage);
+            var endLinkedSet = getLinkedSet(endImage);
+            var minLengthPath = getMinLengthPath(startLinkedSet, endLinkedSet);
+            path.attr('shape', {points: convert(minLengthPath)});
+
+        }
+
+        zr.add(startImage);
+        zr.add(endImage);
+        zr.add(path);
+        refreshLine();
+
+    });
+
+</script>
+<div id="main" style="width:1000px;height:600px;"></div>
+</body>
+</html>
