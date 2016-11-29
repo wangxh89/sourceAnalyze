@@ -12,7 +12,7 @@ import {
 import {connect} from 'react-redux';
 import ModalBox from 'react-native-modalbox';
 import Spinner from 'react-native-spinkit';
-
+import * as TYPES from '../common/Types';
 import {toLogIn} from '../actions/user';
 
 import Signup from './Signup';
@@ -77,7 +77,12 @@ class Login extends Component {
         let passwd = this.state.password;
         let action = this.state.action;
         var opt = `username=${username}&password=${passwd}&action=login`;
-        this.props.dispatch(toLogIn(opt));
+        //this.props.dispatch(toLogIn(opt));
+
+        this.props.dispatch({ 'type': TYPES.LOGGING });
+        setTimeout(()=> {
+            this.props.dispatch({ 'type': TYPES.LOG_IN, 'user': null });
+        },2000)
     }
 
     onChangeName(text) {
